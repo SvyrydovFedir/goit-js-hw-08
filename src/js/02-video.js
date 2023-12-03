@@ -1,7 +1,7 @@
-
 import throttle from 'lodash.throttle';
+import Player from '@vimeo/player';
 const iframe = document.querySelector('iframe');
-const player = new Vimeo.Player(iframe);
+const player = new Player(iframe);
 
 let PLAYBACK_TIME = 'videoplayer-current-time';
 
@@ -11,7 +11,7 @@ const onPlay = function (data) {
 
 player.on('timeupdate', throttle(onPlay, 1000));
 
-const storedTime = localStorage.getItem(PLAYBACK_TIME);
+const storedTime = JSON.parse(localStorage.getItem(PLAYBACK_TIME));
 
 player
   .setCurrentTime(storedTime)
