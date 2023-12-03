@@ -2,12 +2,14 @@ import throttle from 'lodash.throttle';
 const feedbackForm = document.querySelector('.feedback-form');
 const STORAGE_KEY_NAME = 'feedback-form-state';
 
-feedbackForm.addEventListener('input', throttle(handlerForm, 500));
+const email = feedbackForm.email;
+const message = feedbackForm.message;
 
-function handlerForm(event) {
+feedbackForm.addEventListener('input', throttle(handlerInputForm, 500));
+feedbackForm.addEventListener('submit', throttle(handlerSubmitForm, 500));
+
+function handlerInputForm(event) {
   event.preventDefault();
-  const email = feedbackForm.email;
-  const message = feedbackForm.message;
 
   if (event.target.tagName === 'INPUT' || event.target.tagName === 'TEXTAREA') {
     const currentValues = {
@@ -19,8 +21,15 @@ function handlerForm(event) {
 
     const savedStorage = localStorage.getItem(STORAGE_KEY_NAME);
     if (savedStorage) {
-      email.value = JSON.parse(savedStorage).email;
-      message.value = JSON.parse(savedStorage).message;
+      email.value = JSON.parse(savedStorage).email || '';
+      message.value = JSON.parse(savedStorage).message || '';
     }
   }
+}
+
+function handlerSubmitForm(event) {
+  event.preventDefault();
+
+  localStorage.removeItem(STORAGE_KEY_NAME);
+  console.log(`email: ${email.value}; message ${message.value}`);
 }
