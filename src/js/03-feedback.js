@@ -31,5 +31,6 @@ function handlerSubmitForm(event) {
   event.preventDefault();
 
   localStorage.removeItem(STORAGE_KEY_NAME);
+  event.currentTarget.reset();
   console.log(`email: ${email.value}; message ${message.value}`);
 }
